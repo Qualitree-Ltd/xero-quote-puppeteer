@@ -1,8 +1,9 @@
-# Use official Node image
+# Use official Node.js image
 FROM node:18-slim
 
-# Install Puppeteer Chromium dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Install necessary dependencies for Chromium
+RUN apt-get update && apt-get install -y \
+    wget \
     ca-certificates \
     fonts-liberation \
     libappindicator3-1 \
@@ -11,31 +12,32 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libatk1.0-0 \
     libcups2 \
     libdbus-1-3 \
-    libdrm2 \
-    libgbm1 \
-    libgtk-3-0 \
+    libgdk-pixbuf2.0-0 \
     libnspr4 \
     libnss3 \
     libx11-xcb1 \
     libxcomposite1 \
     libxdamage1 \
     libxrandr2 \
-    libxss1 \
-    libxtst6 \
     xdg-utils \
-    wget \
+    libu2f-udev \
+    libxss1 \
+    libgbm1 \
+    libdrm2 \
+    libxshmfence1 \
+    libglu1-mesa \
     --no-install-recommends && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Copy your files
+# Copy files
 COPY . .
 
 # Install dependencies
 RUN npm install
 
-# Start the script
+# Start the app
 CMD ["node", "sendQuote.js"]
