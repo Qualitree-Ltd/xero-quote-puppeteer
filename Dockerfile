@@ -33,11 +33,14 @@ RUN apt-get update && apt-get install -y \
 # Set the working directory
 WORKDIR /app
 
-# Copy files
+# Copy project files
 COPY . .
 
-# Install dependencies
+# Install node dependencies
 RUN npm install
 
-# Start the app
+# Disable Chromium sandbox (safe in Docker)
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+
+# Run your script
 CMD ["node", "sendQuote.js"]
